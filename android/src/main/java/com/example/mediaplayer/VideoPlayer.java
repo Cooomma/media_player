@@ -1,31 +1,22 @@
 package com.example.mediaplayer;
 
 import android.content.Context;
-import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import android.view.Surface;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import io.flutter.plugin.common.EventChannel;
-import io.flutter.plugin.common.MethodChannel;
-import io.flutter.view.TextureRegistry;
-
-import com.google.android.exoplayer2.source.ConcatenatingMediaSource;
 import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Player.DefaultEventListener;
+import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.source.ConcatenatingMediaSource;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
@@ -40,9 +31,18 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-import com.google.android.exoplayer2.Timeline;
-import android.support.annotation.Nullable;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import io.flutter.plugin.common.EventChannel;
+import io.flutter.plugin.common.MethodChannel;
+import io.flutter.view.TextureRegistry;
+
+import static com.google.android.exoplayer2.C.STREAM_TYPE_MUSIC;
 import static com.google.android.exoplayer2.Player.REPEAT_MODE_ALL;
 import static com.google.android.exoplayer2.Player.REPEAT_MODE_OFF;
 
@@ -77,9 +77,24 @@ class VideoPlayer {
 
         TrackSelector trackSelector = new DefaultTrackSelector();
 
-        exoPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
+        RenderersFactory renderersFactory = buildRenderersFactory(true);
+
+        exoPlayer = ExoPlayerFactory.newSimpleInstance(context, renderersFactory, trackSelector);
 
         setupVideoPlayer(eventChannel, textureEntry, result);
+    }
+
+    public RenderersFactory buildRenderersFactory(boolean preferExtensionRenderer) {
+        @DefaultRenderersFactory.ExtensionRendererMode
+        int extensionRendererMode =
+//                useExtensionRenderers()
+//                        ? (preferExtensionRenderer
+//                        ?
+                        DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER;
+//                        : DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON)
+//                        : DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF;
+        return new DefaultRenderersFactory(/* context= */ context)
+                .setExtensionRendererMode(extensionRendererMode);
     }
 
     Map getCurrentPlayingSourceDetails() {
@@ -235,7 +250,7 @@ class VideoPlayer {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             exoPlayer.setAudioAttributes(new AudioAttributes.Builder().setContentType(C.CONTENT_TYPE_MOVIE).build());
         } else {
-            exoPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            exoPlayer.setAudioStreamType(STREAM_TYPE_MUSIC);
         }
     }
 

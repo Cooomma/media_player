@@ -22,7 +22,7 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
 
     defaultConfig {
         minSdkVersion 16
@@ -37,14 +37,20 @@ android {
             targetCompatibility JavaVersion.VERSION_1_8
         }
     }
+
+    ext {
+        exo_version = '2.10.1'
+    }
+
     dependencies {
-        implementation 'com.android.support:appcompat-v7:27.1.1'
-        implementation 'com.android.support:support-media-compat:27.1.1'
-        implementation 'com.google.android.exoplayer:exoplayer-core:2.9.1'
-        implementation 'com.google.android.exoplayer:exoplayer-ui:2.9.1'
-        implementation 'com.google.android.exoplayer:exoplayer-hls:2.9.1'
-        implementation 'com.google.android.exoplayer:exoplayer-dash:2.9.1'
-        implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.9.1'
-        implementation 'com.google.android.exoplayer:extension-mediasession:2.9.1'
+        implementation 'androidx.appcompat:appcompat:1.1.0'
+        implementation 'androidx.media:media:1.1.0'
+        implementation 'androidx.annotation:annotation:1.1.0'
+        implementation "com.google.android.exoplayer:exoplayer-core:$exo_version"
+        implementation 'com.google.android.exoplayer:exoplayer-ui:2.10.1'
+        implementation 'com.google.android.exoplayer:exoplayer-hls:2.10.1'
+        implementation 'com.google.android.exoplayer:exoplayer-dash:2.10.1'
+        implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.10.1'
+        implementation 'com.google.android.exoplayer:extension-mediasession:2.10.1'
     }
 }

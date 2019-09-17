@@ -1,26 +1,22 @@
 package com.example.mediaplayer;
 
-import static com.example.mediaplayer.C.MEDIA_SESSION_TAG;
-import static com.example.mediaplayer.C.PLAYBACK_CHANNEL_ID;
-import static com.example.mediaplayer.C.PLAYBACK_NOTIFICATION_ID;
-
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.v4.media.session.MediaSessionCompat;
+
+import androidx.annotation.Nullable;
 
 import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.BitmapCallback;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.MediaDescriptionAdapter;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.NotificationListener;
-import android.support.v4.media.session.MediaSessionCompat;
-import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
-import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator;
-import android.support.annotation.Nullable;
-import android.support.v4.media.MediaDescriptionCompat;
+
+import static com.example.mediaplayer.C.PLAYBACK_CHANNEL_ID;
+import static com.example.mediaplayer.C.PLAYBACK_NOTIFICATION_ID;
 
 class PersistentNotification {
     private Service service;
